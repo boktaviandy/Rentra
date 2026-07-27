@@ -190,11 +190,11 @@
 
 /* ===== SUBSCRIPTION CARD ===== */
 .sidebar-sub-card {
-  margin: 0 12px 12px;
+  margin: 0 12px 10px;
   border-radius: var(--radius-md);
-  padding: 12px 14px;
+  padding: 8px 10px;
   border: 1px solid transparent;
-  font-size: 12px;
+  font-size: 11px;
   transition: all 0.2s ease;
 }
 .sub-status-ok      { background: #F0FFF4; border-color: #BBF7D0; }
@@ -210,9 +210,8 @@
 .sub-card-header {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 6px;
-  color: var(--text-muted);
+  gap: 5px;
+  margin-bottom: 4px;
 }
 .sub-status-ok .sub-card-header      { color: #166534; }
 .sub-status-info .sub-card-header    { color: #1D4ED8; }
@@ -223,12 +222,19 @@
 .dark .sub-status-warning .sub-card-header { color: #FDE68A; }
 .dark .sub-status-danger .sub-card-header  { color: #FCA5A5; }
 
-.sub-card-label { font-weight: 600; flex: 1; font-size: 11px; }
+.sub-card-label {
+  font-weight: 700;
+  flex: 1;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .sub-card-status {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 1px 6px;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
   border-radius: 99px;
   text-transform: uppercase;
 }
@@ -237,56 +243,34 @@
 .sub-status-warning .sub-card-status { background: #FDE68A; color: #92400E; }
 .sub-status-danger .sub-card-status  { background: #FECACA; color: #991B1B; }
 
-.sub-card-paket {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-main);
-  margin-bottom: 8px;
-}
-
-.sub-card-days {
+.sub-card-footer {
   display: flex;
-  align-items: baseline;
-  gap: 4px;
-  margin-bottom: 6px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 2px;
 }
-.sub-days-number {
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 1;
-}
-.sub-status-ok .sub-days-number      { color: #166534; }
-.sub-status-info .sub-days-number    { color: #1D4ED8; }
-.sub-status-warning .sub-days-number { color: #92400E; }
-.sub-status-danger .sub-days-number  { color: #991B1B; }
-.dark .sub-status-ok .sub-days-number      { color: #86efac; }
-.dark .sub-status-info .sub-days-number    { color: #93C5FD; }
-.dark .sub-status-warning .sub-days-number { color: #FDE68A; }
-.dark .sub-status-danger .sub-days-number  { color: #FCA5A5; }
-
-.sub-days-text { font-size: 11px; color: var(--text-muted); }
-
-.sub-card-bar {
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(0,0,0,0.08);
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-.dark .sub-card-bar { background: rgba(255,255,255,0.08); }
-.sub-card-bar-fill {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 0.5s ease;
-}
-.sub-status-ok .sub-card-bar-fill      { background: #16A34A; }
-.sub-status-info .sub-card-bar-fill    { background: #2563EB; }
-.sub-status-warning .sub-card-bar-fill { background: #F59E0B; }
-.sub-status-danger .sub-card-bar-fill  { background: #DC2626; }
 
 .sub-card-expired {
   font-size: 10px;
   color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.sub-card-extend-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  background: var(--primary);
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+.sub-card-extend-btn:hover {
+  opacity: 0.9;
 }
 
 .sidebar-footer {
