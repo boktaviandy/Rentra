@@ -22,6 +22,24 @@ function saveTenants(tenants) {
   }
 }
 
+// Sync the active owner session if the updated tenant matches the logged-in tenant
+const CURRENT_TENANT_KEY = 'rentra_current_tenant';
+function syncCurrentTenantSession(updatedId, changedFields) {
+  try {
+    const raw = localStorage.getItem(CURRENT_TENANT_KEY);
+    if (!raw) return;
+    const current = JSON.parse(raw);
+    if (current?.id === updatedId) {
+      const merged = { ...current, ...changedFields };
+      localStorage.setItem(CURRENT_TENANT_KEY, JSON.stringify(merged));
+      // Notify useAuth listeners so Header/Sidebar re-render immediately
+      window.dispatchEvent(new Event('rentra_auth_change'));
+    }
+  } catch (e) {
+    console.error('Failed to sync current tenant session', e);
+  }
+}
+
 export function useTenantData() {
   const [tenants, setTenants] = useState(() => loadTenants());
 
@@ -59,6 +77,7 @@ export function useTenantData() {
     setTenants((prev) => {
       const updated = prev.map((t) => (t.id === id ? { ...t, status: newStatus } : t));
       saveTenants(updated);
+      syncCurrentTenantSession(id, { status: newStatus });
       return updated;
     });
   }, []);
@@ -69,11 +88,12 @@ export function useTenantData() {
         if (t.id === id) {
           const currentExp = new Date(t.tglExpired > new Date().toISOString().slice(0, 10) ? t.tglExpired : new Date());
           currentExp.setDate(currentExp.getDate() + days);
-          return {
-            ...t,
+          const fields = {
             status: 'Aktif',
             tglExpired: currentExp.toISOString().slice(0, 10),
           };
+          syncCurrentTenantSession(id, fields);
+          return { ...t, ...fields };
         }
         return t;
       });
@@ -94,6 +114,7 @@ export function useTenantData() {
     setTenants((prev) => {
       const updated = prev.map((t) => (t.id === id ? { ...t, paket: newPaket } : t));
       saveTenants(updated);
+      syncCurrentTenantSession(id, { paket: newPaket });
       return updated;
     });
   }, []);
@@ -102,6 +123,7 @@ export function useTenantData() {
     setTenants((prev) => {
       const updated = prev.map((t) => (t.id === id ? { ...t, ...fields } : t));
       saveTenants(updated);
+      syncCurrentTenantSession(id, fields);
       return updated;
     });
   }, []);
