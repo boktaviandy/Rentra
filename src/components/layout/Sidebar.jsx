@@ -154,14 +154,31 @@ export function Sidebar() {
           </div>
           <div className="sub-card-footer">
             <span className="sub-card-expired">Exp: {tglExpired}</span>
-            <a
-              href={`https://wa.me/6281250308099?text=${encodeURIComponent(`Halo Admin Rentra, saya mau perpanjang langganan rental: ${namaRental} (${paket})`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="sub-card-extend-btn"
-            >
-              Perpanjang
-            </a>
+            {(() => {
+              let superAdminWa = '6281250308099';
+              try {
+                const cfg = localStorage.getItem('rentra_superadmin_config');
+                if (cfg) {
+                  const parsed = JSON.parse(cfg);
+                  if (parsed.noWaSuperAdmin) {
+                    let cleaned = parsed.noWaSuperAdmin.replace(/\D/g, '');
+                    if (cleaned.startsWith('0')) cleaned = '62' + cleaned.slice(1);
+                    if (cleaned) superAdminWa = cleaned;
+                  }
+                }
+              } catch (e) {}
+
+              return (
+                <a
+                  href={`https://wa.me/${superAdminWa}?text=${encodeURIComponent(`Halo Admin Rentra, saya mau perpanjang langganan rental: ${namaRental} (${paket})`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="sub-card-extend-btn"
+                >
+                  Perpanjang
+                </a>
+              );
+            })()}
           </div>
         </div>
       )}
