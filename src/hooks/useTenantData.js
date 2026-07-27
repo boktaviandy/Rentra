@@ -85,6 +85,25 @@ export function useTenantData() {
       return updated;
     });
 
+    // Record automatic payment log entry
+    try {
+      const PAYMENTS_KEY = 'rentra_payments_v1';
+      const existingPayments = JSON.parse(localStorage.getItem(PAYMENTS_KEY) || '[]');
+      const nominalMap = { 'Trial': 0, 'Basic': 299000, 'Pro': 599000, 'Enterprise': 1299000 };
+      const newPayLog = {
+        id: `PAY-${String(Date.now()).slice(-6)}`,
+        tenant: newTenant.namaRental,
+        paket: `${newTenant.paket} Plan`,
+        nominal: nominalMap[newTenant.paket] ?? 0,
+        tgl: todayStr,
+        metode: newTenant.paket === 'Trial' ? 'Pendaftaran Trial' : 'Transfer Bank / Gateway',
+        status: 'Lunas',
+      };
+      localStorage.setItem(PAYMENTS_KEY, JSON.stringify([newPayLog, ...existingPayments]));
+    } catch (e) {
+      console.error('Failed to log payment entry for new tenant', e);
+    }
+
     return newTenant;
   }, [tenants.length]);
 
@@ -108,6 +127,24 @@ export function useTenantData() {
             tglExpired: currentExp.toISOString().slice(0, 10),
           };
           syncCurrentTenantSession(id, fields);
+
+          // Record extension payment log
+          try {
+            const PAYMENTS_KEY = 'rentra_payments_v1';
+            const existingPayments = JSON.parse(localStorage.getItem(PAYMENTS_KEY) || '[]');
+            const nominalMap = { 'Trial': 0, 'Basic': 299000, 'Pro': 599000, 'Enterprise': 1299000 };
+            const extLog = {
+              id: `PAY-${String(Date.now()).slice(-6)}`,
+              tenant: t.namaRental,
+              paket: `Perpanjangan ${t.paket}`,
+              nominal: nominalMap[t.paket] ?? 299000,
+              tgl: new Date().toISOString().slice(0, 10),
+              metode: 'Manual Super Admin',
+              status: 'Lunas',
+            };
+            localStorage.setItem(PAYMENTS_KEY, JSON.stringify([extLog, ...existingPayments]));
+          } catch (e) {}
+
           return { ...t, ...fields };
         }
         return t;
