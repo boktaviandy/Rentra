@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../hooks/useTheme';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useAuth } from '../../hooks/useAuth';
@@ -31,6 +32,7 @@ function SubscriptionBanner({ daysLeft, paket }) {
 }
 
 export function Header() {
+  const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const { currentLang, toggleLanguage } = useLanguage();
   const { currentTenant } = useAuth();
