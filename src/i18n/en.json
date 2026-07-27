@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Rentra",
+    "tagline": "Car Rental SaaS Management"
+  },
+  "roles": {
+    "superadmin": "Super Admin",
+    "owner": "Rental Owner",
+    "admin": "Rental Admin"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "mobil": "Vehicles",
+    "booking": "Bookings",
+    "kalender": "Booking Calendar",
+    "customer": "Customers",
+    "driver": "Drivers",
+    "pemasukan": "Income",
+    "pengeluaran": "Expenses",
+    "laporan": "Reports",
+    "invoice": "Invoices",
+    "pengaturan": "Settings",
+    "tenant": "Tenant Management",
+    "paket": "Subscription Plans",
+    "langganan": "Subscriptions",
+    "pembayaran": "Payments",
+    "statistik": "Analytics",
+    "pengaturan_platform": "Platform Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "total_mobil": "Total Vehicles",
+    "mobil_disewa": "Rented Vehicles",
+    "pendapatan_bulan_ini": "Income This Month",
+    "pengeluaran_bulan_ini": "Expenses This Month",
+    "laba_bersih": "Net Profit",
+    "booking_hari_ini": "Bookings Today",
+    "booking_besok": "Bookings Tomorrow",
+    "pendapatan_30_hari": "Income Last 30 Days",
+    "booking_terbaru": "Recent Bookings",
+    "mobil_kembali_hari_ini": "Vehicles Returning Today",
+    "aktivitas_terakhir": "Recent Activities"
+  },
+  "status": {
+    "tersedia": "Available",
+    "disewa": "Rented",
+    "servis": "In Service",
+    "nonaktif": "Inactive",
+    "draft": "Draft",
+    "booking": "Booked",
+    "berjalan": "Active",
+    "selesai": "Completed",
+    "dibatalkan": "Cancelled",
+    "aktif": "Active",
+    "expired": "Expired",
+    "trial": "Trial",
+    "suspended": "Suspended"
+  },
+  "actions": {
+    "add": "Add New",
+    "edit": "Edit",
+    "delete": "Delete",
+    "detail": "Details",
+    "save": "Save",
+    "cancel": "Cancel",
+    "filter": "Filter",
+    "search": "Search...",
+    "export": "Export PDF/Excel",
+    "print": "Print",
+    "confirm": "Confirm"
+  }
+}

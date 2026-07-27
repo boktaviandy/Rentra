@@ -1,0 +1,212 @@
+.kalender-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-container {
+  padding: 16px;
+  background: var(--bg-card);
+}
+
+.calendar-toolbar-compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.calendar-month-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-mobil-box-compact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-app);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+}
+
+.form-select-compact {
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.calendar-legend-compact {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: var(--bg-app);
+  border-radius: var(--radius-sm);
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-green { background: #16A34A; }
+.legend-blue { background: #2563EB; }
+.legend-red { background: #DC2626; }
+.legend-amber { background: #D97706; }
+
+/* Micro Calendar Grid (Super Compact, fits whole month on screen) */
+.custom-calendar-grid-micro {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--border-color);
+  gap: 1px;
+}
+
+.grid-header-cell-micro {
+  background: var(--bg-app);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 6px 4px;
+}
+
+.grid-cell-micro {
+  background: var(--bg-card);
+  height: 48px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.15s ease;
+}
+
+.grid-cell-micro.empty-cell {
+  background: var(--bg-app);
+  opacity: 0.3;
+}
+
+.grid-cell-micro.today-cell {
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.cell-day-num-micro {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.today-cell .cell-day-num-micro {
+  background: var(--primary);
+  color: #FFFFFF;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.cell-dropdown-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: transform 0.1s ease, opacity 0.15s ease;
+}
+
+.cell-dropdown-badge:hover {
+  transform: scale(1.04);
+  opacity: 0.9;
+}
+
+.badge-variant-blue { background: #2563EB; }
+.badge-variant-green { background: #16A34A; }
+.badge-variant-red { background: #DC2626; }
+.badge-variant-amber { background: #D97706; }
+
+.day-dropdown-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dropdown-event-item {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.dropdown-event-item:hover {
+  opacity: 0.9;
+}
+
+.event-pill-blue { background: #2563EB; }
+.event-pill-green { background: #16A34A; }
+.event-pill-red { background: #DC2626; }
+.event-pill-amber { background: #D97706; }
+
+.event-detail-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.event-detail-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 6px;
+}
