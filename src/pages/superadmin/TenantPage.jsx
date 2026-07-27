@@ -3,16 +3,22 @@ import { PageHeader } from '../../components/ui/PageHeader';
 import { Table } from '../../components/ui/Table';
 import { Badge, getStatusBadgeVariant } from '../../components/ui/Badge';
 import { Modal } from '../../components/ui/Modal';
-import { RefreshCw, Trash2, Plus, MapPin, Phone, CalendarDays, Check } from 'lucide-react';
+import { RefreshCw, Trash2, Plus, MapPin, Phone, CalendarDays, Check, Key, Copy, Eye, EyeOff } from 'lucide-react';
 import { useTenantData } from '../../hooks/useTenantData';
 
 export function TenantPage() {
-  const { tenants, addTenant, updateStatus, updatePaket, updateTenant, extendSubscription, deleteTenant } = useTenantData();
+  const { tenants, addTenant, updateStatus, updatePaket, updateTenant, extendSubscription, deleteTenant, resetPassword } = useTenantData();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [extendModalTenant, setExtendModalTenant] = useState(null);
   const [extendOption, setExtendOption] = useState('365');
   const [customDate, setCustomDate] = useState('');
+
+  // Reset Password Modal State
+  const [resetModalTenant, setResetModalTenant] = useState(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const [formData, setFormData] = useState({
     namaRental: '',
@@ -94,6 +100,29 @@ export function TenantPage() {
     if (window.confirm('Apakah Anda yakin ingin menghapus tenant ini?')) {
       deleteTenant(id);
     }
+  };
+
+  const handleOpenResetModal = (tenant) => {
+    // Generate random 10-char password
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+    const generated = Array.from({ length: 10 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    setResetModalTenant(tenant);
+    setNewPassword(generated);
+    setShowPassword(true);
+    setCopied(false);
+  };
+
+  const handleResetSubmit = (e) => {
+    e.preventDefault();
+    if (!resetModalTenant || !newPassword) return;
+    resetPassword(resetModalTenant.id, newPassword);
+    alert(`Password untuk ${resetModalTenant.namaRental} berhasil diperbarui!`);
+  };
+
+  const handleCopyPassword = () => {
+    navigator.clipboard.writeText(newPassword);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   // Calculate new expiration preview
@@ -210,6 +239,15 @@ export function TenantPage() {
           </button>
 
           <button
+            className="btn btn-secondary btn-sm text-warning"
+            style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '12px', color: '#D97706', borderColor: '#FDE68A', background: '#FFFBEB' }}
+            title="Reset Password Tenant"
+            onClick={() => handleOpenResetModal(row)}
+          >
+            <Key size={13} /> Reset Pass
+          </button>
+
+          <button
             className="btn-icon text-danger"
             title="Hapus Tenant"
             onClick={() => handleDelete(row.id)}
@@ -313,6 +351,85 @@ export function TenantPage() {
               <button type="submit" className="btn btn-primary">
                 <Check size={16} /> Simpan Perpanjangan
               </button>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {/* Modal Reset Password */}
+      {resetModalTenant && (
+        <Modal
+          isOpen={true}
+          onClose={() => setResetModalTenant(null)}
+          title={`Reset Password Tenant — ${resetModalTenant.namaRental}`}
+        >
+          <form onSubmit={handleResetSubmit}>
+            <div style={{ background: 'var(--bg-app)', padding: '14px', borderRadius: '8px', marginBottom: '16px', border: '1px solid var(--border-color)' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Tenant & Email Login:</div>
+              <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '2px' }}>
+                {resetModalTenant.namaRental}
+              </div>
+              <div style={{ fontSize: '13px', color: 'var(--primary)', fontWeight: '600' }}>
+                {resetModalTenant.email}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Password Baru (Auto-generated / Kustom)</label>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ position: 'relative', flex: 1 }}>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className="form-input"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    style={{ paddingRight: '40px', fontWeight: '700', letterSpacing: showPassword ? '0.5px' : '2px' }}
+                  />
+                  <button
+                    type="button"
+                    className="btn-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', background: 'transparent' }}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleCopyPassword}
+                  title="Salin Password"
+                >
+                  <Copy size={15} /> {copied ? 'Tersalin!' : 'Salin'}
+                </button>
+              </div>
+              <small style={{ color: 'var(--text-muted)', fontSize: '11px', marginTop: '4px', display: 'block' }}>
+                Tenant akan diimbau mengganti password ini saat pertama kali login kembali.
+              </small>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+              <a
+                className="btn btn-success"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                href={`https://wa.me/${resetModalTenant.noHp?.replace(/\D/g, '')}?text=${encodeURIComponent(
+                  `Halo ${resetModalTenant.namaOwner}! 👋\n\nPassword akun Rentra Anda (${resetModalTenant.namaRental}) telah di-reset oleh Super Admin:\n\n👤 Email: ${resetModalTenant.email}\n🔑 Password Baru: ${newPassword}\n\nSilakan login kembali di https://rentra-blond.vercel.app/login`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Phone size={14} /> Kirim via WA
+              </a>
+
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button type="button" className="btn btn-secondary" onClick={() => setResetModalTenant(null)}>
+                  Batal
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  <Check size={16} /> Simpan Password Baru
+                </button>
+              </div>
             </div>
           </form>
         </Modal>
