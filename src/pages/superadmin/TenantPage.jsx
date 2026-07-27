@@ -22,7 +22,6 @@ export function TenantPage() {
     kota: '',
     paket: 'Pro',
     status: 'Aktif',
-    durasiHari: 365,
   });
 
   const handleOpenAddModal = () => {
@@ -34,7 +33,6 @@ export function TenantPage() {
       kota: 'Jakarta',
       paket: 'Pro',
       status: 'Aktif',
-      durasiHari: 365,
     });
     setIsAddModalOpen(true);
   };
@@ -51,7 +49,7 @@ export function TenantPage() {
       kota: formData.kota,
       paket: formData.paket,
       status: formData.status,
-      durasiHari: Number(formData.durasiHari) || 365,
+      // durasiHari intentionally omitted — auto-derived from plan in useTenantData
     });
 
     setIsAddModalOpen(false);
