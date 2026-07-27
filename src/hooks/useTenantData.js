@@ -180,6 +180,19 @@ export function useTenantData() {
     });
   }, []);
 
+  const resetPassword = useCallback((id, newPassword) => {
+    setTenants((prev) => {
+      const updated = prev.map((t) =>
+        t.id === id
+          ? { ...t, passwordSementara: newPassword, password: newPassword }
+          : t
+      );
+      saveTenants(updated);
+      syncCurrentTenantSession(id, { passwordSementara: newPassword, password: newPassword });
+      return updated;
+    });
+  }, []);
+
   return {
     tenants,
     addTenant,
@@ -188,5 +201,6 @@ export function useTenantData() {
     updateTenant,
     extendSubscription,
     deleteTenant,
+    resetPassword,
   };
 }
