@@ -3,7 +3,7 @@ import { PageHeader } from '../../components/ui/PageHeader';
 import { Table } from '../../components/ui/Table';
 import { Badge, getStatusBadgeVariant } from '../../components/ui/Badge';
 import { Modal } from '../../components/ui/Modal';
-import { Building2, ShieldAlert, CheckCircle, RefreshCw, Trash2, Plus, MapPin, Phone, CalendarDays, Edit3, Check } from 'lucide-react';
+import { RefreshCw, Trash2, Plus, MapPin, Phone } from 'lucide-react';
 import { useTenantData } from '../../hooks/useTenantData';
 
 export function TenantPage() {
@@ -166,32 +166,42 @@ export function TenantPage() {
     },
     {
       header: 'Status',
-      cell: (row) => (
-        <Badge variant={getStatusBadgeVariant(row.status)}>{row.status}</Badge>
-      )
+      cell: (row) => {
+        const statusStyles = {
+          'Aktif':     { background: '#F0FDF4', color: '#15803D', borderColor: '#86EFAC' },
+          'Trial':     { background: '#FFFBEB', color: '#B45309', borderColor: '#FCD34D' },
+          'Suspended': { background: '#FFF7ED', color: '#C2410C', borderColor: '#FDBA74' },
+          'Blocked':   { background: '#FEF2F2', color: '#B91C1C', borderColor: '#FECACA' },
+        };
+        const style = statusStyles[row.status] || statusStyles['Trial'];
+        return (
+          <select
+            value={row.status || 'Trial'}
+            onChange={(e) => handleStatusChange(row.id, e.target.value)}
+            style={{
+              padding: '4px 8px',
+              fontSize: '12px',
+              fontWeight: '700',
+              borderRadius: '6px',
+              border: `1.5px solid ${style.borderColor}`,
+              background: style.background,
+              color: style.color,
+              cursor: 'pointer',
+              width: 'auto',
+            }}
+          >
+            <option value="Trial">🟡 Trial</option>
+            <option value="Aktif">🟢 Aktif</option>
+            <option value="Suspended">🟠 Suspended</option>
+            <option value="Blocked">🔴 Blocked</option>
+          </select>
+        );
+      }
     },
     {
       header: 'Aksi Super Admin',
       cell: (row) => (
-        <div className="table-actions" style={{ display: 'flex', gap: '6px' }}>
-          {row.status === 'Aktif' || row.status === 'Trial' ? (
-            <button
-              className="btn-icon text-danger"
-              title="Suspend Tenant"
-              onClick={() => handleStatusChange(row.id, 'Suspended')}
-            >
-              <ShieldAlert size={16} />
-            </button>
-          ) : (
-            <button
-              className="btn-icon text-success"
-              title="Aktifkan Tenant"
-              onClick={() => handleStatusChange(row.id, 'Aktif')}
-            >
-              <CheckCircle size={16} />
-            </button>
-          )}
-
+        <div className="table-actions" style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
           <button
             className="btn btn-secondary btn-sm"
             style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '12px' }}
