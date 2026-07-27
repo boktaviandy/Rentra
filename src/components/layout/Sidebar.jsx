@@ -44,6 +44,7 @@ export function Sidebar() {
 
   const paket = currentTenant?.paket || 'Trial';
   const tglExpired = currentTenant?.tglExpired || '2026-08-10';
+  const namaRental = currentTenant?.namaRental || 'Garuda Rent Car';
 
   // Hitung sisa hari langganan
   const daysLeft = useMemo(() => {
