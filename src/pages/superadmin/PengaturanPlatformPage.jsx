@@ -3,21 +3,29 @@ import { PageHeader } from '../../components/ui/PageHeader';
 import { Save, Settings } from 'lucide-react';
 
 export function PengaturanPlatformPage() {
-  const [formData, setFormData] = useState({
-    namaApp: 'Rentra SaaS',
-    domain: 'rentra.id',
-    smtpHost: 'smtp.sendgrid.net',
-    smtpPort: 587,
-    smtpUser: 'apikey',
-    waApiKey: 'WA_API_KEY_LIVE_99887766',
-    paymentGateway: 'Midtrans Production',
-    merchantId: 'M109283'
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem('rentra_superadmin_config');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return {
+      namaApp: 'Rentra SaaS',
+      domain: 'rentra.id',
+      noWaSuperAdmin: '081250308099',
+      smtpHost: 'smtp.sendgrid.net',
+      smtpPort: 587,
+      smtpUser: 'apikey',
+      waApiKey: 'WA_API_KEY_LIVE_99887766',
+      paymentGateway: 'Midtrans Production',
+      merchantId: 'M109283'
+    };
   });
 
   const [saved, setSaved] = useState(false);
 
   const handleSave = (e) => {
     e.preventDefault();
+    localStorage.setItem('rentra_superadmin_config', JSON.stringify(formData));
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -56,6 +64,20 @@ export function PengaturanPlatformPage() {
                 onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
               />
             </div>
+          </div>
+
+          <div className="form-group" style={{ marginTop: '12px' }}>
+            <label className="form-label">Nomor WhatsApp Super Admin (Penerima Perpanjangan)</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="Contoh: 081250308099"
+              value={formData.noWaSuperAdmin || ''}
+              onChange={(e) => setFormData({ ...formData, noWaSuperAdmin: e.target.value })}
+            />
+            <small style={{ color: 'var(--text-muted)', fontSize: '11px', marginTop: '4px', display: 'block' }}>
+              Nomor WhatsApp ini akan digunakan saat tenant menekan tombol "Perpanjang" di sidebar.
+            </small>
           </div>
 
           <hr style={{ borderColor: 'var(--border-color)', margin: '20px 0' }} />
