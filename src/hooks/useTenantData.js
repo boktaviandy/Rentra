@@ -40,13 +40,28 @@ function syncCurrentTenantSession(updatedId, changedFields) {
   }
 }
 
+// Default duration per plan (in days)
+const PLAN_DURATIONS = {
+  'Trial':      14,
+  'Basic':      30,
+  'Pro':        30,
+  'Enterprise': 365,
+};
+
 export function useTenantData() {
   const [tenants, setTenants] = useState(() => loadTenants());
 
   const addTenant = useCallback((tenantData) => {
     const todayStr = new Date().toISOString().slice(0, 10);
     const expDate = new Date();
-    expDate.setDate(expDate.getDate() + (tenantData.durasiHari || 14)); // default trial 14 hari
+
+    // If durasiHari explicitly passed, use it. Otherwise derive from plan.
+    const plan = tenantData.paket || 'Trial';
+    const durasiHari = tenantData.durasiHari
+      ? Number(tenantData.durasiHari)
+      : (PLAN_DURATIONS[plan] ?? 14);
+
+    expDate.setDate(expDate.getDate() + durasiHari);
 
     const newTenant = {
       id: `TNT-${String(Date.now()).slice(-6)}`,   // unique ID berbasis timestamp
