@@ -3,7 +3,7 @@ import { PageHeader } from '../../components/ui/PageHeader';
 import { Table } from '../../components/ui/Table';
 import { Badge, getStatusBadgeVariant } from '../../components/ui/Badge';
 import { Modal } from '../../components/ui/Modal';
-import { RefreshCw, Trash2, Plus, MapPin, Phone } from 'lucide-react';
+import { RefreshCw, Trash2, Plus, MapPin, Phone, CalendarDays, Check } from 'lucide-react';
 import { useTenantData } from '../../hooks/useTenantData';
 
 export function TenantPage() {
