@@ -23,7 +23,7 @@ function getStoredCurrentTenant() {
   } catch (e) {
     console.error('Failed to parse current tenant', e);
   }
-  return DEFAULT_TENANT;
+  return null;
 }
 
 export function useAuth() {
@@ -68,7 +68,7 @@ export function useAuth() {
 
   const logout = useCallback(() => {
     localStorage.removeItem(CURRENT_TENANT_KEY);
-    setCurrentTenant(DEFAULT_TENANT);
+    setCurrentTenant(null);
     window.dispatchEvent(new Event('rentra_auth_change'));
   }, []);
 
