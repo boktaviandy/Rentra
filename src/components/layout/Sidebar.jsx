@@ -147,22 +147,21 @@ export function Sidebar() {
       {!isSuperAdmin && (
         <div className={`sidebar-sub-card ${subStatusClass}`}>
           <div className="sub-card-header">
-            {daysLeft <= 3 ? <ShieldAlert size={14} /> : <Clock size={14} />}
-            <span className="sub-card-label">Langganan</span>
+            {daysLeft <= 3 ? <ShieldAlert size={12} /> : <Clock size={12} />}
+            <span className="sub-card-label">{paket} • {daysLeft} Hari</span>
             <span className="sub-card-status">{subStatusLabel}</span>
           </div>
-          <div className="sub-card-paket">{paket}</div>
-          <div className="sub-card-days">
-            <span className="sub-days-number">{daysLeft}</span>
-            <span className="sub-days-text">hari tersisa</span>
+          <div className="sub-card-footer">
+            <span className="sub-card-expired">Exp: {tglExpired}</span>
+            <a
+              href={`https://wa.me/6281250308099?text=${encodeURIComponent(`Halo Admin Rentra, saya mau perpanjang langganan rental: ${namaRental} (${paket})`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sub-card-extend-btn"
+            >
+              Perpanjang
+            </a>
           </div>
-          <div className="sub-card-bar">
-            <div
-              className="sub-card-bar-fill"
-              style={{ width: `${Math.min(100, (daysLeft / 30) * 100)}%` }}
-            />
-          </div>
-          <div className="sub-card-expired">Expired: {tglExpired}</div>
         </div>
       )}
 
